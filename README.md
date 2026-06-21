@@ -97,6 +97,7 @@ cmd/
 └── server/
 
 internal/
+├── apperrors/
 ├── auth/
 ├── cache/
 ├── config/
@@ -107,7 +108,8 @@ internal/
 ├── models/
 ├── repositories/
 ├── routes/
-└── services/
+├── services/
+└── tests/
 
 migrations/
 docs/
@@ -117,8 +119,8 @@ docs/
 
 Swagger Documentation:
 
-```text
-https://YOUR_RENDER_URL/swagger/index.html
+```text[
+https://YOUR_RENDER_URL/swagger/index.html](https://golang-student-management.onrender.com/swagger/index.html
 ```
 
 ## Environment Variables
@@ -141,7 +143,7 @@ JWT_REFRESH_SECRET=
 ### Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Abhi78k/golang-student-management.git
 cd project-1
 ```
 
@@ -179,13 +181,3 @@ go test ./internal/tests -v
 * PostgreSQL Transactions
 * Graceful Shutdown
 * Integration Testing
-
-## Future Improvements
-
-* CI/CD with GitHub Actions
-* Kubernetes Deployment
-* Prometheus Metrics
-* Distributed Tracing
-* Role Based Access Control (RBAC)
-* Refresh Token Rotation
-* Background Job Processing
