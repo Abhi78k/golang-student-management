@@ -1,0 +1,600 @@
+basePath: /
+definitions:
+  project-1_internal_dto.CourseResponse:
+    properties:
+      available_seats:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  project-1_internal_dto.CreateCourseRequest:
+    properties:
+      available_seats:
+        type: integer
+      name:
+        type: string
+    required:
+    - available_seats
+    - name
+    type: object
+  project-1_internal_dto.CreateStudentRequest:
+    properties:
+      age:
+        maximum: 120
+        minimum: 1
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+    required:
+    - age
+    - email
+    - first_name
+    - last_name
+    type: object
+  project-1_internal_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  project-1_internal_dto.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  project-1_internal_dto.PatchStudentRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+    type: object
+  project-1_internal_dto.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  project-1_internal_dto.RefreshResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
+  project-1_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  project-1_internal_dto.StudentResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+    type: object
+  project-1_internal_dto.UpdateCourseRequest:
+    properties:
+      available_seats:
+        type: integer
+      name:
+        type: string
+    required:
+    - available_seats
+    - name
+    type: object
+  project-1_internal_dto.UpdateStudentRequest:
+    properties:
+      age:
+        maximum: 120
+        minimum: 1
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+    required:
+    - age
+    - email
+    - first_name
+    - last_name
+    type: object
+  project-1_internal_dto.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Student Management System built with Go, Gin, PostgreSQL and Redis.
+  title: Student Management API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login using email and password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project-1_internal_dto.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login user
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      description: Removes refresh token from Redis
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Logout user
+      tags:
+      - Auth
+  /auth/me:
+    get:
+      description: Returns currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project-1_internal_dto.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Generate a new access token using a refresh token
+      parameters:
+      - description: Refresh Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project-1_internal_dto.RefreshResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Refresh access token
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new account
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - Auth
+  /courses:
+    get:
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/project-1_internal_dto.CourseResponse'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: List courses
+      tags:
+      - Courses
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Course
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.CreateCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create course
+      tags:
+      - Courses
+  /courses/{id}:
+    delete:
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - BearerAuth: []
+      summary: Delete course
+      tags:
+      - Courses
+    get:
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project-1_internal_dto.CourseResponse'
+      security:
+      - BearerAuth: []
+      summary: Get course by ID
+      tags:
+      - Courses
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Course
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.UpdateCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update course
+      tags:
+      - Courses
+  /courses/{id}/enroll:
+    post:
+      description: Enroll currently authenticated student into a course
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Enroll in course
+      tags:
+      - Enrollments
+  /students:
+    get:
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Search
+        in: query
+        name: search
+        type: string
+      - description: Age
+        in: query
+        name: age
+        type: integer
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/project-1_internal_dto.StudentResponse'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: List students
+      tags:
+      - Students
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Student
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.CreateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create student
+      tags:
+      - Students
+  /students/{id}:
+    delete:
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - BearerAuth: []
+      summary: Delete student
+      tags:
+      - Students
+    get:
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/project-1_internal_dto.StudentResponse'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get student by ID
+      tags:
+      - Students
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Patch Student
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.PatchStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Partially update student
+      tags:
+      - Students
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Student
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/project-1_internal_dto.UpdateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update student
+      tags:
+      - Students
+swagger: "2.0"

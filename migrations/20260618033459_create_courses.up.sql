@@ -1,0 +1,6 @@
+CREATE TABLE courses (
+	id UUID PRIMARY KEY,
+	name VARCHAR(255) UNIQUE NOT NULL,
+	available_seats INTEGER NOT NULL,
+	created_at TIMESTAMP NOT NULL
+);
