@@ -25,8 +25,12 @@ import (
 // @title Student Management API
 // @version 1.0
 // @description Student Management System built with Go, Gin, PostgreSQL and Redis.
-// @BasePath /
 
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
+// @BasePath /
 func main() {
 
 	cfg := config.Load()
