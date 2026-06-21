@@ -23,7 +23,7 @@ type Config struct {
 func Load() *Config {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading the .env file.")
+		log.Println(".env not found.")
 	}
 	return &Config{
 		DBHost:           os.Getenv("DB_HOST"),
