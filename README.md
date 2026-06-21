@@ -127,7 +127,7 @@ docs/
 Swagger Documentation:
 
 ```text[
-https://YOUR_RENDER_URL/swagger/index.html](https://golang-student-management.onrender.com/swagger/index.html
+[https://golang-student-management.onrender.com/swagger/index.html](https://golang-student-management.onrender.com/swagger/index.html)
 ```
 
 ## Environment Variables
