@@ -94,8 +94,8 @@ A production-ready Student Management System built with Go, Gin, PostgreSQL, Red
 <img width="1002" height="675" alt="er-diagram-student-management" src="https://github.com/user-attachments/assets/26d9b8d0-b681-4906-b5c2-a271c210692b" />
 
 ## Architecture Diagram
-<img width="4707" height="8192" alt="image" src="https://github.com/user-attachments/assets/151324c8-06e3-4cd6-afc4-67a1de6334c8" />
-<img width="4707" height="8192" alt="image" src="https://github.com/user-attachments/assets/28e8f93d-8937-4254-a94e-b4b925a46274" />
+<img width="5088" height="3008" alt="image" src="https://github.com/user-attachments/assets/e64cc8dc-d259-4604-a818-c2863f643519" />
+<img width="3680" height="3056" alt="image" src="https://github.com/user-attachments/assets/f915c793-1eb6-4974-b93e-987ae2faeba9" />
 
 ## Project Structure
 
