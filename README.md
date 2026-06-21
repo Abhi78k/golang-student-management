@@ -126,7 +126,7 @@ docs/
 
 Swagger Documentation:
 
-```text[
+```text
 [https://golang-student-management.onrender.com/swagger/index.html](https://golang-student-management.onrender.com/swagger/index.html)
 ```
 
