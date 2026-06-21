@@ -25,7 +25,6 @@ import (
 // @title Student Management API
 // @version 1.0
 // @description Student Management System built with Go, Gin, PostgreSQL and Redis.
-// @host localhost:8080
 // @BasePath /
 
 func main() {
@@ -93,8 +92,14 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8080"
+	}
+
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + port,
 		Handler: router,
 	}
 
